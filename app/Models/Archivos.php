@@ -15,7 +15,11 @@ class Archivos extends Model
     protected $timestamps=true;
 
     public function secciones(){
+<<<<<<< HEAD
         return $this->belongsTo(Secciones::class,'id_seccion','id')
+=======
+        return $this->belongsTo(Secciones::class,'id_seccion','id');
+>>>>>>> d26e7d2 (first commit)
     }
 
 

@@ -18,6 +18,10 @@ class Imparte extends Model
 
     public function asignatura()
     {
+<<<<<<< HEAD
         return $this->hasMany(Asignatura::class,'id','id_asignatura')
+=======
+        return $this->hasMany(Asignatura::class,'id','id_asignatura');
+>>>>>>> d26e7d2 (first commit)
     }
 }
