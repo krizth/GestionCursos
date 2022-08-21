@@ -1,13 +1,14 @@
 <template>
     <Add v-model:submit="route" v-model:show="showAddModal">
         <template v-slot:title>
-            Agregar Asignatura
+            Agregar una Seccion a {{course.title}}
         </template>
         <template v-slot:form >
             <div class="q-gutter-md q-pa-sm">
-                <q-input name="title" v-model="formData.title" type="text" label="Nombre del curso o asignatura"/>
-                <q-input name="description" v-model="formData.description" type="textarea" label="Descripción de la asignatura"/>
-            </div>
+                  <q-input name="title" v-model="formData.title" type="text" label="Titulo de la seccion de la asignatura"/>
+                <q-input name="description" v-model="formData.description" type="textarea" label="Descripción"/>
+                <input type="hidden" name="id_asignatura" :value="course.id"/>
+           </div>
         </template>
         <template v-slot:actions>
             <q-btn no-caps color="primary" label="Guardar" type="submit" />
@@ -20,7 +21,7 @@
 import { computed, ref } from '@vue/runtime-core';
 import Add from '../misc/Add.vue';
 export default {
-    name:'AddCourse',
+    name:'AddSection',
   components: { Add },
     props: {
         show: {
@@ -34,6 +35,11 @@ export default {
                 method:""
             })
 
+        },
+        course:{
+            type:Object,
+            default:()=>({}),
+            required:true
         }
     
     },
@@ -41,15 +47,19 @@ export default {
     setup(props,{emit}){
         const formData=ref({
             title:"",
-            description:""
+            description:"",
+            course:undefined
         })
+        
         const route=computed(()=>props.submit)
         const showAddModal=computed({
             get:()=>props.show,
             set:(val)=>emit('update:show',val)
         })
+        const course = computed(()=>props.course)
         return {
             showAddModal,
+            course,
             formData,
             route
         }
@@ -57,4 +67,7 @@ export default {
 };
 </script>
 
-<style></style>
+<style  >
+
+
+</style>

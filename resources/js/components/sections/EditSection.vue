@@ -7,6 +7,7 @@
             <div class="q-gutter-md q-pa-sm">
                 <q-input name="title" v-model="targetEditItem.title" type="text" label="Nombre del curso o asignatura"/>
                 <q-input name="description" v-model="targetEditItem.description" type="textarea" label="Descripción de la asignatura"/>
+               <input type="hidden" name="id_asignatura" :value="course.id"/>
                 <input type="hidden" name="_method" value="PUT">
             </div>
         </template>
@@ -21,11 +22,20 @@
 import { computed } from '@vue/runtime-core'
 import Add from '../misc/Add.vue'
 export default {
-    name:"EditCurse",
+    name:"EditSection",
     components:{
         Add
     },
     props:{
+        course:{
+            type:Object,
+            required:true,
+              default:()=>({
+                id:0,
+                title:""
+            })
+        
+        },
        submit :{
             type:Object,
             required:true,
@@ -37,7 +47,7 @@ export default {
         },
         target:{
             type:Object,
-            default:()=>{}
+            default:()=>{},
         },
         showEditModal:{
             type:Boolean,
@@ -46,8 +56,6 @@ export default {
     },
     emits:["update:target","update:showEditModal"],
     setup(props,{emit}) {
-
-   
      const targetEditItem=computed({
         get:()=>props.target,
         set:(val)=>emit('update:target',val)
@@ -57,10 +65,12 @@ export default {
         get:()=>props.showEditModal,
         set:(val)=>emit("update:showEditModal",val)
      })
+     const course = computed(()=>props.course);
      return {
         targetEditItem,
         showEditModal,
-        submitRoute
+        submitRoute,
+        course
      }
     }
 

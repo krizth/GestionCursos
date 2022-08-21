@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asignatura;
+use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 
 class AsignaturasController extends Controller
@@ -11,9 +13,10 @@ class AsignaturasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($message=null)
     {
-        //
+        $asignaturas = Asignatura::all();
+        return View('asignaturas',['asignaturas'=>$asignaturas,'successMsg'=>$message]);
     }
 
     /**
@@ -34,7 +37,12 @@ class AsignaturasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $asignatura = new Asignatura();
+        $asignatura->title = $request->title;
+        $asignatura->description = $request->description;
+        $asignatura->save();
+        $asignaturas = Asignatura::all();
+        return $this->index('Se ha creado exitosamente');
     }
 
     /**
@@ -66,9 +74,17 @@ class AsignaturasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
-        //
+        $asignatura=Asignatura::find($id);
+        if($asignatura){
+            $asignatura->title=$request->input('title');
+            $asignatura->description=$request->input('description');
+            $asignatura->save();
+            $asignaturas=Asignatura::all();
+            return $this->index('Actualizado exitosamente');
+        }
+
     }
 
     /**
@@ -79,6 +95,7 @@ class AsignaturasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Asignatura::destroy($id);
+        return $this->index('Se ha eliminado satisfactoriamente');
     }
 }

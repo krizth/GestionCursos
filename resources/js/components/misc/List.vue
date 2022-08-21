@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -13,7 +13,9 @@
                                     no-caps
                                     no-wrap
                                     color="primary"
-                                  @click="()=>showAdd=true"
+                                    @click="()=>showAdd=true"
+                                    v-show="addbtn"
+                                    aria-label="Agregar Asignatura"
                                 />
                             </div>
                         </div>
@@ -35,8 +37,9 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed } from "@vue/runtime-core";
 import { useQuasar } from "quasar";
+import axios from "axios";
 export default {
     props:{
         deleteRoute:{
@@ -46,29 +49,41 @@ export default {
         showAddForm:{
             type:Boolean,
             default:false
+        },
+        addbutton:{
+            type:Boolean,
+            required:false,
+            default:true
         }
 
     },
-    emits:["update:showAddForm"],
-    setup(props,{emit}) {
-        const q= useQuasar();
+    emits:["update:showAddForm",'update:addbutton'],
+    setup(props,{emit, expose}) {
+        const addbtn=computed({
+            get:()=>props.addbutton,
+            set:(val)=>emit('update:addbutton',val)
+        })
+       const q= useQuasar();
         const showAdd = computed({
             get:()=>props.showAddForm,
             set:(val)=> emit('update:showAddForm',val)
         })
-        const deleteItem = ()=>{
+        const deleteItem = (id)=>{
             q.dialog({
                 title:"Eliminar",
-                text:"Realmente desea eliminar este elemento?",
-                cancel:true,
-                persistent:true
+                message:"Realmente desea eliminar este elemento?",
+                cancel:true
             }).onOk(()=>{
-                windows.location.href=deleteRoute;
+                axios.delete(decodeURI(props.deleteRoute).replace('?',id)).then(()=>{
+                   window.location.href = window.location.href;
+                });
             })
         }
+        expose({delete:deleteItem})
         return {
             showAdd,
-            deleteItem
+            deleteItem,
+            addbtn
         }
     },
 }

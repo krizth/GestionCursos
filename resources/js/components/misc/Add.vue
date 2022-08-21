@@ -16,6 +16,7 @@
                     <q-card-actions>
                         <slot name="actions" class="gap-2 p-2"> </slot>
                     </q-card-actions>
+                    <input type="hidden" :value="action.csrf" name="_token"/>
                 </form>
             </div>
         </q-card>
@@ -34,31 +35,30 @@ export default {
             type: Object,
             default: ()=>({
                 url:"",
-                method:""
+                method:"",
             }),
         },
     },
-    emits: ["update:show", "update:submitRoute"],
+    emits: ["update:show", "update:submit"],
     setup(props, { emit }) {
         const showModal = computed({
             get: () => props.show,
             set: (val) => emit("update:show", val),
         });
+      
         const action = computed({
             get() {
-                return props.submitRoute;
+              
+                return props.submit;
             },
             set(val) {
-                emit("update:submitRoute", val);
+                emit("update:submit", val);
             },
         });
-        const submitData = ()=>{
-            window.location.href=action.value
-        }
+        
         return {
             showModal,
             action,
-            action
         };
     },
 };

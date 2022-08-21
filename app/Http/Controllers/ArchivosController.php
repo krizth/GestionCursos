@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archivos;
 use Illuminate\Http\Request;
 
 class ArchivosController extends Controller
@@ -11,9 +12,10 @@ class ArchivosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $id_seccion=$request->query('id_seccion');
+        return Archivos::where('id_seccion',$id_seccion)->get();
     }
 
     /**

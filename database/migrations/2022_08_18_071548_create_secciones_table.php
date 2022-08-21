@@ -18,7 +18,6 @@ class CreateSeccionesTable extends Migration
             $table->string('title',255);
             $table->string('description',1000)->nullable();
             $table->bigInteger('id_asignatura')->unsigned();
-            $table->bigInteger('id_archivo')->unsigned();
             $table->timestamps();
             $table->foreign('id_asignatura')
             ->references('id')

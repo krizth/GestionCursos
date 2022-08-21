@@ -11,7 +11,7 @@ class Asignatura extends Model
 
     protected $table="asignatura";
     protected $fillable = ['description','title'];
-    protected $timestamps=true;
+    public $timestamps=true;
     
     public function secciones() {
         

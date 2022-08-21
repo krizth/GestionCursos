@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asignatura;
+use App\Models\Secciones;
+use Facade\FlareClient\View;
 use Illuminate\Http\Request;
+use Laravel\Ui\Presets\Vue;
 
 class SeccionesController extends Controller
 {
@@ -11,9 +15,10 @@ class SeccionesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($message=null)
     {
-        //
+        $asignaturas = Asignatura::with('secciones')->get();
+        return $message == null ? View('secciones',compact('asignaturas')):View('secciones',['asignaturas'=>$asignaturas,'successMsg'=>$message]);
     }
 
     /**
@@ -34,7 +39,13 @@ class SeccionesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $seccion = new Secciones();
+        $seccion->title=$request->input('title');
+        $seccion->description=$request->input('description');
+        $seccion->id_asignatura=$request->input('id_asignatura');
+        $seccion->save();
+        return $this->index('Se ha creado exitosamente');
+
     }
 
     /**
@@ -68,7 +79,15 @@ class SeccionesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $seccion = Secciones::find($id);
+        if($seccion){
+            $seccion->title=$request->input('title');
+            $seccion->description=$request->input('description');
+            $seccion->id_asignatura=$request->input('id_asignatura');
+            $seccion->save();
+           
+        }
+      return $this->index('Actualizado exitosamente');
     }
 
     /**
@@ -79,6 +98,7 @@ class SeccionesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Secciones::destroy($id);
+        return $this->index('Se ha eliminado satisfactoriamente');
     }
 }

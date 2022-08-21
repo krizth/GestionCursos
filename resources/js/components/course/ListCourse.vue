@@ -1,6 +1,6 @@
 <template>
-  <div>
-      <List v-model:showAddForm="showAddForm">
+  <div class="col-md-8 offset-2">
+      <List v-model:showAddForm="showAddForm" :deleteRoute="routes.delete.url" ref="List">
         <template v-slot:title> Lista de Asignaturas </template>
         <template v-slot:items>
                   <q-item v-for="course in courses" :key="course.id"  manual-focus   >
@@ -23,13 +23,13 @@
                   
                    </q-item>
           
-                        <q-btn flat icon="delete" color="negative" dense  />
+                        <q-btn flat icon="delete" color="negative" aria-label="Eliminar Asignatura" dense @click="this.$refs.List.delete(course.id)"  />
                     
                 </q-item>
         </template>
     </List>
     <add-course :submit="routes.create" v-model:show="showAddForm"/>
-    <edit-course :submit="routes.edit" v-model:showEditModal="showEditModal" v-model:target=" target" />
+    <edit-course :submit="routes.edit" v-model:showEditModal="showEditModal" v-model:target="target" />
   </div>
 </template>
 
@@ -64,6 +64,13 @@ export default {
                         method:"delete"
                     }
                 })
+        },
+        courses:{
+            type:Array,
+            required:true,
+            default:()=>({
+
+            })
         }
     },
     setup(props) {
@@ -73,30 +80,12 @@ export default {
         const action=computed(()=>{
             return props.routes
         })
+        console.log("courses",props.courses)
         const editCourse=(val)=>{
             target.value=val
             showEditModal.value=true;
         }
-        const courses = ref([
-            {
-                id: 1,
-                title: "Curso 1",
-                description:
-                    "Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.",
-            },
-            {
-                id: 2,
-                title: "Curso 2",
-                description:
-                    "Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.",
-            },
-            {
-                id: 3,
-                title: "Curso 3",
-                description:
-                    "Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.",
-            },
-        ]);
+        const courses = computed(()=>props.courses)
         return {
              target,
             courses,

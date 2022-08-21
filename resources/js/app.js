@@ -7,8 +7,9 @@
  require('./bootstrap');
 
  import {createApp} from 'vue'
- import {Quasar, Notify, useQuasar } from 'quasar'
+ import {Quasar, Notify,Dialog, useQuasar } from 'quasar'
  import CourseList from './components/course/ListCourse.vue'
+ import SectionList from './components/sections/ListSection.vue'
  /**
   * The following block of code may be used to automatically register your
   * Vue components. It will recursively scan this directory for the Vue
@@ -30,8 +31,9 @@
   const app = createApp()
  
   app.component('course-list', CourseList)
+  app.component('section-list', SectionList)
   app.use(Quasar, {  
-        plugins:[Notify],
+        plugins:[Notify,Dialog],
         config: {
             notify: {
                 color:'primary',

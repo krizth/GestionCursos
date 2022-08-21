@@ -12,14 +12,10 @@ class Archivos extends Model
     protected $table="archivos";
     
     protected $fillable=["url","mimetype","name","id_seccion"];
-    protected $timestamps=true;
+    public $timestamps=true;
 
     public function secciones(){
-<<<<<<< HEAD
-        return $this->belongsTo(Secciones::class,'id_seccion','id')
-=======
         return $this->belongsTo(Secciones::class,'id_seccion','id');
->>>>>>> d26e7d2 (first commit)
     }
 
 

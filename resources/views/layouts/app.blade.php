@@ -37,7 +37,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('asignaturas.index') }}">{{ __('Asignaturas') }}</a>
+                           
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="{{ route('secciones.index') }}">{{ __('Secciones por Asignatura') }}</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -80,9 +86,14 @@
         </nav>
 
         <main class="py-4">
+          
             @yield('content')
         </main>
     </div>
-
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    @if(!empty($successMsg))
+    <div class="alert alert-success" role="alert"> {{ $successMsg }}</div>
+    @endif
+  </footer>
 </body>
 </html>
