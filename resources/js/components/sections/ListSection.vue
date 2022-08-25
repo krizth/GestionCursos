@@ -94,7 +94,7 @@
                                 </div>
                             </template>
                             <div class="q-mt-md">
-                                <ListFile :section="section" ref="listfile" :addbutton="!!targetCourse" />
+                                <ListFile :routes="files" :section="section" ref="listfile" :addbutton="!!targetCourse" />
                             </div>
                         </q-expansion-item>
                         <div class="items-center"></div>
@@ -130,12 +130,29 @@ export default {
         List,
         AddSection,
         EditSection,
-        List,
         ListFile,
     },
     props: {
         routes: {
             type: Object,
+            required: true,
+            default: () => ({
+                edit: {
+                    url: "",
+                    method: "patch",
+                },
+                create: {
+                    url: "",
+                    method: "post",
+                },
+                delete: {
+                    url: "",
+                    method: "delete",
+                },
+            }),
+        },
+        files:{
+             type: Object,
             required: true,
             default: () => ({
                 edit: {
@@ -170,9 +187,7 @@ export default {
         };
         onMounted(() => {
             const selected = LocalStorage.getItem("selected-asignatura");
-            const incoming = props.courses.find(
-                (x) => x.id == selected?.value.id
-            );
+            const incoming = props.courses.find(x => x.id == selected?.value.id);
             incoming == undefined
                 ? deleteSelectionOption()
                 : (targetCourse.value = {
@@ -198,7 +213,8 @@ export default {
         const sections = computed(() =>
             targetCourse.value ? targetCourse.value.value.secciones : []
         );
-
+        const files = computed(()=>props.files)
+        const List=ref();
         return {
             target,
             courses,
@@ -209,7 +225,7 @@ export default {
             deleteSection,
             editSection,
             saveSelectedOption,
-            List,
+            files
         };
     },
 };

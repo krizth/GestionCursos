@@ -23,9 +23,26 @@
     ],
 
 ])}}" 
+:files="{{Illuminate\Support\Js::from([
+    'create'=>[
+        'url'=>route('archivos.store'),
+        'method'=>'POST',
+        'csrf'=>$token
+    ],
+    'edit'=>[
+        'url'=>route('archivos.update','?'),
+        'method'=>'POST',
+        'csrf'=>$token
+    ],
+    'delete'=>[
+        'url'=>route('archivos.destroy','?'),
+        'method'=>'POST',
+        'csrf'=>$token
+    ],
+
+])}}"
 :courses="{{ Illuminate\Support\Js::from($asignaturas)}}"
 />
-
 
 @endsection
 

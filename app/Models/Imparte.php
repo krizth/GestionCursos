@@ -10,7 +10,7 @@ class Imparte extends Model
     use HasFactory;
     protected $table = 'imparte';
     protected $fillable = ["id_user", "id_asignatura"];
-
+    protected $hidden=["id"];
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'id_user');

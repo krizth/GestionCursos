@@ -1,5 +1,5 @@
 <template>
-    <Add v-model:submit="route" v-model:show="showAddModal">
+    <Add v-model:submit="route" v-model:show="showAddForm">
         <template v-slot:title>
             Agregar una Seccion a {{course.title}}
         </template>
@@ -52,13 +52,13 @@ export default {
         })
         
         const route=computed(()=>props.submit)
-        const showAddModal=computed({
+        const showAddForm=computed({
             get:()=>props.show,
             set:(val)=>emit('update:show',val)
         })
         const course = computed(()=>props.course)
         return {
-            showAddModal,
+            showAddForm,
             course,
             formData,
             route

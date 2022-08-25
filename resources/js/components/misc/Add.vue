@@ -11,7 +11,7 @@
                 
             </div>
             <div class="card-body">
-                <form :action="action.url" :method="action.method" class="form form-control">
+                <form enctype="multipart/form-data"  :action="action.url" :method="action.method" class="form form-control">
                     <slot name="form" class="gap-3"> </slot>
                     <q-card-actions>
                         <slot name="actions" class="gap-2 p-2"> </slot>

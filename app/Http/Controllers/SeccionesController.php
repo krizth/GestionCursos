@@ -17,7 +17,7 @@ class SeccionesController extends Controller
      */
     public function index($message=null)
     {
-        $asignaturas = Asignatura::with('secciones')->get();
+        $asignaturas = Asignatura::with('secciones')->impart()->get();
         return $message == null ? View('secciones',compact('asignaturas')):View('secciones',['asignaturas'=>$asignaturas,'successMsg'=>$message]);
     }
 
@@ -44,6 +44,7 @@ class SeccionesController extends Controller
         $seccion->description=$request->input('description');
         $seccion->id_asignatura=$request->input('id_asignatura');
         $seccion->save();
+        return $seccion;
         return $this->index('Se ha creado exitosamente');
 
     }

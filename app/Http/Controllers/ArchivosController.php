@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archivos;
+use App\Models\Asignatura;
+use App\Models\Secciones;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArchivosController extends Controller
 {
@@ -12,10 +15,17 @@ class ArchivosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $message=null)
     {
-        $id_seccion=$request->query('id_seccion');
-        return Archivos::where('id_seccion',$id_seccion)->get();
+        if($request->wantsJson()){
+            $id_seccion=$request->query('id_seccion');
+            $seccion = Secciones::find($id_seccion);
+            $impartida=Asignatura::impart()->where('asignatura.id',$seccion->id_asignatura)->first();
+            return $impartida ? Archivos::where('id_seccion',$id_seccion)->get() : null;
+        }else{
+           return  redirect('secciones');
+        }
+      
     }
 
     /**
@@ -36,7 +46,16 @@ class ArchivosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->hasFile('file')){
+            $archivo = new Archivos();
+            $archivo->id_seccion=$request->input('id_seccion');
+            $archivo->mimetype=$request->file('file')->getClientOriginalExtension();
+            $archivo->name=$request->input('name');
+            $archivo->url=$request->file->storeAs('archivos/descargas',$request->file->getClientOriginalName());
+            $archivo->save();
+            
+        }
+        return (new SeccionesController)->index('Se ha creado exitosamente');
     }
 
     /**
@@ -45,9 +64,9 @@ class ArchivosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function downloads($file)
     {
-        //
+        return Storage::get('Archivos/descargas/'.$file);
     }
 
     /**
@@ -81,6 +100,9 @@ class ArchivosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $archivo = Archivos::find($id);
+        Storage::delete($archivo->url);
+        Archivos::destroy($id);
+         return route('secciones.index');
     }
 }

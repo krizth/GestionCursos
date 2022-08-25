@@ -25,4 +25,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('/asignaturas',AsignaturasController::class)->middleware('auth');
 Route::resource('/secciones',SeccionesController::class)->middleware('auth');
-Route::resource('/archivos',ArchivosController::class);//->middleware('auth');
+Route::resource('/archivos',ArchivosController::class)->middleware('auth');
+Route::get('/archivos/descargas/{file}',[ArchivosController::class,'downloads']);

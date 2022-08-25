@@ -14,7 +14,6 @@ class CreateImpartesTable extends Migration
     public function up()
     {
         Schema::create('imparte', function (Blueprint $table) {
-            $table->id();
             $table->bigInteger('id_user')->unsigned();
             $table->bigInteger('id_asignatura')->unsigned();
             $table->timestamps();

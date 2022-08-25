@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class AsignaturasController extends Controller
 {
+   
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +16,7 @@ class AsignaturasController extends Controller
      */
     public function index($message=null)
     {
-        $asignaturas = Asignatura::all();
+        $asignaturas = Asignatura::impart()->get();
         return View('asignaturas',['asignaturas'=>$asignaturas,'successMsg'=>$message]);
     }
 
@@ -42,7 +43,7 @@ class AsignaturasController extends Controller
         $asignatura->description = $request->description;
         $asignatura->save();
         $asignaturas = Asignatura::all();
-        return $this->index('Se ha creado exitosamente');
+        return $this->index('Se ha creado exitosamente, debe esperar confirmacion del administrador');
     }
 
     /**
@@ -76,8 +77,9 @@ class AsignaturasController extends Controller
      */
     public function update(Request $request,$id)
     {
-        $asignatura=Asignatura::find($id);
-        if($asignatura){
+        $impartida=Asignatura::impart()->where('asignatura.id',$id)->first();
+        if($impartida){
+            $asignatura=Asignatura::find($id);
             $asignatura->title=$request->input('title');
             $asignatura->description=$request->input('description');
             $asignatura->save();
@@ -95,7 +97,10 @@ class AsignaturasController extends Controller
      */
     public function destroy($id)
     {
+        $impartida=Asignatura::impart()->where('asignatura.id',$id)->first();
+        if($impartida){
         Asignatura::destroy($id);
         return $this->index('Se ha eliminado satisfactoriamente');
+        }
     }
 }

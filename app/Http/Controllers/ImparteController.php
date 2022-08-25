@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Imparte;
 use Illuminate\Http\Request;
 
 class ImparteController extends Controller
@@ -13,7 +14,7 @@ class ImparteController extends Controller
      */
     public function index()
     {
-        //
+        return Imparte::with("user","asignatura")->all();
     }
 
     /**
