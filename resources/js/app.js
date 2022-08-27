@@ -10,6 +10,7 @@
  import {Quasar, Notify,Dialog, useQuasar } from 'quasar'
  import CourseList from './components/course/ListCourse.vue'
  import SectionList from './components/sections/ListSection.vue'
+ import ImpartsList from './components/imparts/ListImpart.vue'
  /**
   * The following block of code may be used to automatically register your
   * Vue components. It will recursively scan this directory for the Vue
@@ -32,6 +33,7 @@
  
   app.component('course-list', CourseList)
   app.component('section-list', SectionList)
+  app.component('imparts-list',ImpartsList)
   app.use(Quasar, {  
         plugins:[Notify,Dialog],
         config: {

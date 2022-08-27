@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asignatura;
 use App\Models\Imparte;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ImparteController extends Controller
 {
@@ -14,7 +17,9 @@ class ImparteController extends Controller
      */
     public function index()
     {
-        return Imparte::with("user","asignatura")->all();
+        $users = User::all(); //Imparte::with("user","asignatura")->get();
+        $asignaturas = Asignatura::with('users')->get();
+        return View('imparte',['users'=>$users,'asignaturas'=>$asignaturas]);
     }
 
     /**
@@ -35,7 +40,14 @@ class ImparteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(User::isAdmin()){
+            $imparte=new Imparte();
+            $imparte->id_user=$request->id_user;
+            $imparte->id_asignatura=$request->id_asignatura;
+            $imparte->save();
+        }
+    
+        return $this->index();
     }
 
     /**
@@ -78,8 +90,11 @@ class ImparteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($usuario,$asignatura)
     {
-        //
+        if(User::isAdmin()){
+        $imparte= Imparte::where([['id_asignatura',"=",$asignatura],['id_user',"=",$usuario]])->delete();
+        }
+        return $this->index();
     }
 }

@@ -11,6 +11,7 @@ class Imparte extends Model
     protected $table = 'imparte';
     protected $fillable = ["id_user", "id_asignatura"];
     protected $hidden=["id"];
+    public $timestamps=true;
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'id_user');

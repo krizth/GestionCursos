@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArchivosController;
 use App\Http\Controllers\AsignaturasController;
+use App\Http\Controllers\ImparteController;
 use App\Http\Controllers\SeccionesController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('/asignaturas',AsignaturasController::class)->middleware('auth');
 Route::resource('/secciones',SeccionesController::class)->middleware('auth');
 Route::resource('/archivos',ArchivosController::class)->middleware('auth');
+Route::delete('/imparte/{id_user?}/{id_asignatura?}',[
+ImparteController::class,'destroy'
+])->name('imparte.destroy');
+Route::resource('/imparte',ImparteController::class,[
+    'except'=>'destroy'
+])->middleware('auth');
 Route::get('/archivos/descargas/{file}',[ArchivosController::class,'downloads']);

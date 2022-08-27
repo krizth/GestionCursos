@@ -25,4 +25,8 @@ class Asignatura extends Model
         });
     }
 
+    public function users(){
+        return $this->belongsToMany(User::class,'imparte','id_asignatura','id_user');
+    }
+
 }

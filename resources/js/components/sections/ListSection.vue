@@ -1,5 +1,5 @@
 <template>
-    <div class="row full-width">
+    <div class="row" style="max-width:100%">
         <div class="col-4">
             <List :addbutton="false">
                 <template v-slot:title> Asignatura </template>
@@ -48,11 +48,13 @@
                         v-for="section in sections"
                         :key="section.id"
                         manual-focus
+                        style="flex-wrap: wrap !important"
                     >
                         <q-expansion-item
                             expand-separator
                             icon="topic"
-                            size="40px"
+                            size="40px" 
+                         
                         >
                             <template v-slot:header>
                                 <div class="row">
@@ -185,6 +187,7 @@ export default {
         const deleteSelectionOption = () => {
             LocalStorage.remove("selected-asignatura");
         };
+    
         onMounted(() => {
             const selected = LocalStorage.getItem("selected-asignatura");
             const incoming = props.courses.find(x => x.id == selected?.value.id);
@@ -215,6 +218,7 @@ export default {
         );
         const files = computed(()=>props.files)
         const List=ref();
+
         return {
             target,
             courses,
@@ -225,7 +229,8 @@ export default {
             deleteSection,
             editSection,
             saveSelectedOption,
-            files
+            files,
+            List
         };
     },
 };

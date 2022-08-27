@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'isAdmin'
     ];
 
     /**
@@ -30,6 +31,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+
         'password',
         'remember_token'
     ];
@@ -46,5 +48,9 @@ class User extends Authenticatable
     public static function isAdmin()
     {
         return User::find(Auth::id())->isAdmin;
+    }
+
+    public function asignatura(){
+        return $this->belongsToMany(Asignatura::class,'imparte','id_user','id_asignatura');
     }
 }
